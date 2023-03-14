@@ -3,11 +3,14 @@ import Student from "../../common/components/Student/Student";
 import axios from "axios";
 import {Button} from "react-bootstrap";
 import StudentAddModel from "../../common/components/StudentAddModel/StudentAddModel";
+import StudentUpdateModel from "../../common/components/StudentUpdateModel/StudentUpdateModel";
 
 function Axios () {
 
     const [student, setStudent] = useState([]);
     const [addModel, setAddModel] = useState(false);
+    const [updateModel, setUpdateModel] = useState(false);
+    const [selectValue, setSelectValue] = useState();
 
     useEffect(()=> {
         getStudent();
@@ -29,14 +32,21 @@ function Axios () {
             <h1>Student Managment</h1>
             <Button variant="primary" onClick={()=> setAddModel(true)}>Add Student</Button>{' '}
             <div className="d-flex flex-wrap">
-                {student.map((value)=> (
-                    <Student data={value}/>
+                {student.map((value, index)=> (
+                    <Student key={index} data={value} onUpdate={(val)=> {setSelectValue(val); setUpdateModel(true)}}/>
                 ))}
             </div>
 
             <StudentAddModel
                 show={addModel}
                 handleClose={()=>setAddModel(false)}
+                updateData={()=> {getStudent()}}
+            />
+
+            <StudentUpdateModel
+                show={updateModel}
+                handleClose={()=> {setUpdateModel(false)}}
+                data={selectValue}
                 updateData={()=> {getStudent()}}
             />
         </div>
