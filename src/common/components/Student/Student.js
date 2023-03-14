@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Card} from "react-bootstrap";
 
-function Student ({data, onUpdate}) {
+function Student ({data, onUpdate, onDelete}) {
     return (
         <div className="m-2">
             <Card style={{ width: '18rem' }}>
@@ -12,6 +12,9 @@ function Student ({data, onUpdate}) {
                     <Card.Title>Salary : {data.salary}</Card.Title>
                     <Button variant="success" onClick={()=> onUpdate(data)}>
                         Update
+                    </Button>
+                    <Button variant="danger" className="m-2" onClick={()=> onDelete(data)}>
+                        Delete
                     </Button>
                 </Card.Body>
             </Card>
