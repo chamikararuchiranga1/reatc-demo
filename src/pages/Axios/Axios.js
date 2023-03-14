@@ -4,6 +4,19 @@ import axios from "axios";
 import {Button} from "react-bootstrap";
 import StudentAddModel from "../../common/components/StudentAddModel/StudentAddModel";
 import StudentUpdateModel from "../../common/components/StudentUpdateModel/StudentUpdateModel";
+import Swal from 'sweetalert2';
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
 
 function Axios () {
 
@@ -27,15 +40,34 @@ function Axios () {
             });
     }
 
+    // delete methode
     const deleteData = (id) => {
-        axios.delete('http://54.244.163.184:8081/spring_demo/student/'+id )
-            .then(function (response) {
-                getStudent();
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete('http://54.244.163.184:8081/spring_demo/student/'+id )
+                    .then(function (response) {
+                        getStudent();
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Student deleted successfully!'
+                        })
+                    })
+                    .catch(function (error) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Student deleted fail!'
+                        })
+                    });
+            }
+        })
     }
 
     return (
@@ -53,12 +85,14 @@ function Axios () {
                 ))}
             </div>
 
+            {/*student add model*/}
             <StudentAddModel
                 show={addModel}
                 handleClose={()=>setAddModel(false)}
                 updateData={()=> {getStudent()}}
             />
 
+            {/*student update model*/}
             <StudentUpdateModel
                 show={updateModel}
                 handleClose={()=> {setUpdateModel(false)}}
