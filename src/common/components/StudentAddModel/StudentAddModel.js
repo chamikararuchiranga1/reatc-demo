@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import axios from "axios";
 
-function StudentAddModel ({show, handleClose}) {
+function StudentAddModel ({show, handleClose, updateData}) {
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -10,21 +10,31 @@ function StudentAddModel ({show, handleClose}) {
     const [id, setId] = useState('');
 
     const addStudent = async () => {
-        alert("add student");
-        // axios.post('http://54.244.163.184:8081/spring_demo-0.0.1/student', {
-        //     id:3,
-        //     name:"Chamikara",
-        //     address:"Panadura",
-        //     salary:50000.00
-        // },{headers: {
-        //         'Content-Type': 'application/json'
-        //     }})
-        //     .then(function (response) {
-        //         console.log(response);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+        axios.post('http://54.244.163.184:8081/spring_demo/student', {
+            id: id,
+            name: name,
+            address: address,
+            salary: salary
+        },{
+            headers: {
+                'Content-Type': 'application/json'
+            }})
+            .then(function (response) {
+                handleClose();
+                updateData();
+                clear();
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    const clear = () => {
+        setId("");
+        setName("");
+        setAddress("");
+        setSalary("");
     }
 
     return (

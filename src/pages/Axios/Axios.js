@@ -17,14 +17,13 @@ function Axios () {
     const getStudent = () => {
         axios({
             method: 'get',
-            url: 'http://54.244.163.184:8081/spring_demo-0.0.1/student',
+            url: 'http://54.244.163.184:8081/spring_demo/student/',
         })
             .then(function (response) {
                 setStudent(response.data);
             });
     }
 
-    // Add Student
     return (
         <div className="w-100">
             <h1>Student Managment</h1>
@@ -35,7 +34,11 @@ function Axios () {
                 ))}
             </div>
 
-            <StudentAddModel show={addModel} handleClose={()=>setAddModel(false)}/>
+            <StudentAddModel
+                show={addModel}
+                handleClose={()=>setAddModel(false)}
+                updateData={()=> {getStudent()}}
+            />
         </div>
     )
 }
