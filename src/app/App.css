@@ -1,5 +1,14 @@
 .App {
-  margin: 20px;
+  overflow-x: hidden;
+}
+
+.side {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.nav-content {
+  z-index: 100;
 }
 
 .link {
